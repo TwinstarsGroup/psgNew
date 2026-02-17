@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaySlip Generator - TwinStars Group</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo-section">
+                <img src="logo.png" alt="Company Logo" class="company-logo" id="companyLogo">
+                <h1>PaySlip Generator</h1>
+            </div>
+            <p class="tagline">Automated Payslip Management System</p>
+        </header>
+
+        <!-- Employee Search Section -->
+        <section class="search-section" id="searchSection">
+            <div class="card">
+                <h2>Employee Lookup</h2>
+                <div class="form-group">
+                    <label for="employeeId">Enter Employee ID</label>
+                    <input type="text" id="employeeId" placeholder="e.g., EMP001" class="input-field" aria-label="Employee ID">
+                    <button type="button" onclick="searchEmployee()" class="btn btn-primary" aria-label="Search for employee by ID">Search Employee</button>
+                </div>
+                <div id="errorMessage" class="error-message"></div>
+            </div>
+        </section>
+
+        <!-- Employee Details Section -->
+        <section class="employee-section" id="employeeSection" style="display: none;">
+            <div class="card">
+                <h2>Employee Information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>Employee ID:</label>
+                        <span id="displayEmployeeId"></span>
+                    </div>
+                    <div class="info-item">
+                        <label>Name:</label>
+                        <span id="displayName"></span>
+                    </div>
+                    <div class="info-item">
+                        <label>Position:</label>
+                        <span id="displayPosition"></span>
+                    </div>
+                    <div class="info-item">
+                        <label>Date of Joining:</label>
+                        <span id="displayDOJ"></span>
+                    </div>
+                    <div class="info-item">
+                        <label>Account Number:</label>
+                        <span id="displayAccount"></span>
+                    </div>
+                    <div class="info-item">
+                        <label>Company Name:</label>
+                        <span id="displayCompany"></span>
+                    </div>
+                </div>
+
+                <!-- Period Selection -->
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="payPeriod">Pay Period</label>
+                    <input type="month" id="payPeriod" class="input-field">
+                </div>
+            </div>
+
+            <!-- Earnings Section -->
+            <div class="card">
+                <h2>Earnings</h2>
+                <div class="salary-grid">
+                    <div class="form-group">
+                        <label for="basicSalary">Basic Salary</label>
+                        <input type="number" id="basicSalary" class="input-field" placeholder="0.00" oninput="calculateNetSalary()">
+                    </div>
+                    <div class="form-group">
+                        <label for="hra">House Rent Allowance (HRA)</label>
+                        <input type="number" id="hra" class="input-field" placeholder="0.00" oninput="calculateNetSalary()">
+                    </div>
+                    <div class="form-group">
+                        <label for="conveyance">Conveyance Allowance</label>
+                        <input type="number" id="conveyance" class="input-field" placeholder="0.00" oninput="calculateNetSalary()">
+                    </div>
+                    <div class="form-group">
+                        <label for="specialAllowance">Special Allowance</label>
+                        <input type="number" id="specialAllowance" class="input-field" placeholder="0.00" oninput="calculateNetSalary()">
+                    </div>
+                    <div class="form-group">
+                        <label for="bonus">Bonus</label>
+                        <input type="number" id="bonus" class="input-field" placeholder="0.00" oninput="calculateNetSalary()">
+                    </div>
+                    <div class="form-group">
+                        <label for="otherEarnings">Other Earnings</label>
+                        <input type="number" id="otherEarnings" class="input-field" placeholder="0.00" oninput="calculateNetSalary()">
+                    </div>
+                </div>
+                <div class="total-section">
+                    <label>Total Earnings:</label>
+                    <span id="totalEarnings" class="total-amount">₹0.00</span>
+                </div>
+            </div>
+
+            <!-- Deductions Section -->
+            <div class="card">
+                <h2>Deductions</h2>
+                <div class="salary-grid">
+                    <div class="form-group">
+                        <label for="providentFund">Provident Fund (PF)</label>
+                        <input type="number" id="providentFund" class="input-field" placeholder="0.00" oninput="calculateNetSalary()">
+                    </div>
+                    <div class="form-group">
+                        <label for="professionalTax">Professional Tax</label>
+                        <input type="number" id="professionalTax" class="input-field" placeholder="0.00" oninput="calculateNetSalary()">
+                    </div>
+                    <div class="form-group">
+                        <label for="incomeTax">Income Tax (TDS)</label>
+                        <input type="number" id="incomeTax" class="input-field" placeholder="0.00" oninput="calculateNetSalary()">
+                    </div>
+                    <div class="form-group">
+                        <label for="esi">Employee State Insurance (ESI)</label>
+                        <input type="number" id="esi" class="input-field" placeholder="0.00" oninput="calculateNetSalary()">
+                    </div>
+                    <div class="form-group">
+                        <label for="loan">Loan Deduction</label>
+                        <input type="number" id="loan" class="input-field" placeholder="0.00" oninput="calculateNetSalary()">
+                    </div>
+                    <div class="form-group">
+                        <label for="otherDeductions">Other Deductions</label>
+                        <input type="number" id="otherDeductions" class="input-field" placeholder="0.00" oninput="calculateNetSalary()">
+                    </div>
+                </div>
+                <div class="total-section">
+                    <label>Total Deductions:</label>
+                    <span id="totalDeductions" class="total-amount deduction">₹0.00</span>
+                </div>
+            </div>
+
+            <!-- Net Salary Section -->
+            <div class="card net-salary-card">
+                <h2>Net Salary</h2>
+                <div class="net-salary-display">
+                    <label>Net Salary Credited:</label>
+                    <span id="netSalary" class="net-salary-amount">₹0.00</span>
+                </div>
+                <button onclick="generatePayslip()" class="btn btn-success">Generate Payslip</button>
+                <button onclick="resetForm()" class="btn btn-secondary">Reset</button>
+            </div>
+        </section>
+
+        <!-- Payslip Display Section -->
+        <section class="payslip-section" id="payslipSection" style="display: none;">
+            <div class="card payslip-card">
+                <div class="payslip-header">
+                    <img src="logo.png" alt="Company Logo" class="payslip-logo">
+                    <div>
+                        <h2 id="payslipCompanyName"></h2>
+                        <p>Payslip for <span id="payslipPeriod"></span></p>
+                    </div>
+                </div>
+                
+                <div class="payslip-employee-info">
+                    <div class="info-row">
+                        <div><strong>Employee ID:</strong> <span id="payslipEmpId"></span></div>
+                        <div><strong>Name:</strong> <span id="payslipName"></span></div>
+                    </div>
+                    <div class="info-row">
+                        <div><strong>Position:</strong> <span id="payslipPosition"></span></div>
+                        <div><strong>Date of Joining:</strong> <span id="payslipDOJ"></span></div>
+                    </div>
+                    <div class="info-row">
+                        <div><strong>Account Number:</strong> <span id="payslipAccount"></span></div>
+                        <div><strong>Pay Period:</strong> <span id="payslipPayPeriod"></span></div>
+                    </div>
+                </div>
+
+                <div class="payslip-breakdown">
+                    <div class="breakdown-section">
+                        <h3>Earnings</h3>
+                        <table class="payslip-table">
+                            <tbody id="earningsTable"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td><strong>Total Earnings</strong></td>
+                                    <td><strong id="payslipTotalEarnings"></strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    
+                    <div class="breakdown-section">
+                        <h3>Deductions</h3>
+                        <table class="payslip-table">
+                            <tbody id="deductionsTable"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td><strong>Total Deductions</strong></td>
+                                    <td><strong id="payslipTotalDeductions"></strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="payslip-net-salary">
+                    <h3>Net Salary Credited</h3>
+                    <div class="net-amount" id="payslipNetSalary"></div>
+                </div>
+
+                <div class="payslip-actions">
+                    <button onclick="printPayslip()" class="btn btn-primary">Print Payslip</button>
+                    <button onclick="downloadPayslip()" class="btn btn-success">Download PDF</button>
+                    <button onclick="backToForm()" class="btn btn-secondary">Back</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <!-- Application Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
